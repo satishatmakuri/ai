@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Memory Edge — Editorial · Q2 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0d0d10;
+    --bg-2: #16161b;
+    --bg-3: #1d1d23;
+    --ink: #ede6d6;
+    --ink-muted: #9e978a;
+    --ink-dim: #6c6658;
+    --rule: #2a2a31;
+    --accent: #c97f44;         /* copper */
+    --accent-2: #6ea2c9;       /* silicon blue */
+    --accent-3: #d4b95f;       /* muted gold */
+    --danger: #c94444;
+    --max: 1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* grain */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+  /* === MASTHEAD === */
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+  }
+  .masthead-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .masthead-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink);
+    letter-spacing: 0.22em;
+  }
+  .logo-mark {
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--accent);
+    position: relative;
+    transform: rotate(45deg);
+  }
+  .logo-mark::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    background: var(--accent);
+  }
+
+  /* === HERO === */
+  .hero {
+    padding: 80px 0 40px;
+    position: relative;
+  }
+  .hero-kicker {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .hero-kicker .line { flex: 0 0 60px; height: 1px; background: var(--accent); opacity: 0.6; }
+
+  .hero h1 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    max-width: 18ch;
+    margin-bottom: 32px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  .hero-deck {
+    font-family: "Fraunces", serif;
+    font-weight: 300;
+    font-size: clamp(19px, 2vw, 23px);
+    line-height: 1.5;
+    color: var(--ink-muted);
+    max-width: 62ch;
+    margin-bottom: 48px;
+    font-style: italic;
+  }
+
+  .byline {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    flex-wrap: wrap;
+  }
+  .byline .author { color: var(--ink); }
+  .byline .dot { color: var(--ink-dim); }
+
+  /* === HERO VISUAL === */
+  .hero-visual {
+    margin: 60px 0;
+    aspect-ratio: 16 / 7;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-visual svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .caption {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-top: 14px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* === ARTICLE BODY === */
+  .article {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 0 80px;
+  }
+
+  .article p {
+    margin-bottom: 26px;
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .article p.lede::first-letter {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: 76px;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 12px 0 0;
+    color: var(--accent);
+  }
+  .article p.lede {
+    font-size: 21px;
+    line-height: 1.55;
+    font-family: "Fraunces", serif;
+    font-weight: 300;
+    color: var(--ink);
+  }
+
+  .section-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    margin: 72px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .section-label .num {
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
+
+  h2 {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+    color: var(--ink);
+  }
+
+  h3 {
+    font-family: "Fraunces", serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 40px 0 16px;
+    color: var(--ink);
+  }
+
+  .article a {
+    color: var(--accent-2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 0.2s;
+  }
+  .article a:hover { border-color: var(--accent-2); }
+
+  strong { font-weight: 500; color: var(--ink); }
+  em { font-style: italic; }
+
+  /* === PULL QUOTE === */
+  .pullquote {
+    margin: 56px -40px;
+    padding: 48px 40px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font-family: "Fraunces", serif;
+    font-weight: 300;
+    font-size: clamp(26px, 3.5vw, 36px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-style: italic;
+    color: var(--ink);
+    position: relative;
+  }
+  .pullquote::before {
+    content: "\201C";
+    font-family: "Fraunces", serif;
+    font-size: 100px;
+    color: var(--accent);
+    position: absolute;
+    top: 12px;
+    left: -8px;
+    line-height: 1;
+  }
+  .pullquote cite {
+    display: block;
+    font-family: "IBM Plex Mono", monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-top: 20px;
+  }
+
+  /* === STAT BLOCK === */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 48px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stat {
+    padding: 28px 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .stat .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* === INLINE FIGURES === */
+  .figure {
+    margin: 48px -40px;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+  }
+  .figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+  }
+  .figure svg { width: 100%; height: auto; display: block; }
+  .figure-caption {
+    padding: 14px 20px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    border-top: 1px solid var(--rule);
+  }
+  .figure-caption .tag { color: var(--accent); margin-right: 10px; }
+
+  /* === SKILLS MATRIX === */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    margin: 40px -40px;
+    border: 1px solid var(--rule);
+  }
+  .skill-card {
+    background: var(--bg-2);
+    padding: 32px 28px;
+    position: relative;
+  }
+  .skill-card .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .skill-card h4 {
+    font-family: "Fraunces", serif;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .skill-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    margin-bottom: 0;
+  }
+
+  /* === CALL-OUT === */
+  .callout {
+    margin: 48px -40px;
+    padding: 36px 40px;
+    background: linear-gradient(135deg, rgba(201,127,68,0.08), rgba(110,162,201,0.04));
+    border-left: 3px solid var(--accent);
+  }
+  .callout .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .callout h4 {
+    font-family: "Fraunces", serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .callout p { font-size: 16px; color: var(--ink); margin-bottom: 0; }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 60px 0 40px;
+    margin-top: 40px;
+    background: var(--bg-2);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-about h4 {
+    font-family: "Fraunces", serif;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  .footer-about p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+  .footer-col h5 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .footer-col a {
+    display: block;
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 0;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--ink); }
+
+  .colophon {
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container { padding: 0 20px; }
+    .article { padding: 20px 0 60px; }
+    .pullquote, .figure, .skills-grid, .callout { margin-left: -20px; margin-right: -20px; }
+    .pullquote { padding: 36px 20px; }
+    .stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid var(--rule); }
+    .stat:last-child { border-bottom: none; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .article p.lede::first-letter { font-size: 60px; }
+  }
+
+  /* Reveal animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * { animation: fadeUp 0.8s ease-out backwards; }
+  .hero-kicker { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.2s; }
+  .hero-deck { animation-delay: 0.35s; }
+  .byline { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="container">
+    <div class="masthead-row">
+      <div class="masthead-logo">
+        <div class="logo-mark"></div>
+        <span>The Memory Edge</span>
+      </div>
+      <div>Issue 17 · Q2 2026 · Editorial</div>
+      <div>Vol. IV / No. 2</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-kicker">
+      <span class="line"></span>
+      From the Director's Desk
+    </div>
+    <h1>The memory supercycle is here. <em>Is your organization ready for it?</em></h1>
+    <p class="hero-deck">
+      HBM has rewritten the economics of the fab. 3D DRAM is rewriting the physics.
+      CXL is rewriting the server. What all three have in common is that they are,
+      first and foremost, rewriting what we hire, train, and promote for.
+    </p>
+    <div class="byline">
+      <span class="author">By the Technical Director, Memory Technologies</span>
+      <span class="dot">◆</span>
+      <span>8 min read</span>
+      <span class="dot">◆</span>
+      <span>Published April 23, 2026</span>
+    </div>
+  </div>
+
+  <!-- HERO VISUAL: custom HBM stack diagram -->
+  <div class="container">
+    <div class="hero-visual">
+      <svg viewBox="0 0 1200 525" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#16161b"/>
+            <stop offset="100%" stop-color="#0d0d10"/>
+          </linearGradient>
+          <linearGradient id="dieGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#2a2a31"/>
+            <stop offset="50%" stop-color="#3d3d46"/>
+            <stop offset="100%" stop-color="#2a2a31"/>
+          </linearGradient>
+          <linearGradient id="copperGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c97f44"/>
+            <stop offset="100%" stop-color="#8a4e22"/>
+          </linearGradient>
+          <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#2a2a31" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <rect width="1200" height="525" fill="url(#bgGrad)"/>
+        <rect width="1200" height="525" fill="url(#grid)" opacity="0.5"/>
+
+        <!-- Substrate / base -->
+        <rect x="300" y="420" width="600" height="30" fill="#1d1d23" stroke="#3d3d46" stroke-width="1"/>
+        <rect x="280" y="450" width="640" height="8" fill="#2a2a31"/>
+
+        <!-- Base logic die -->
+        <rect x="340" y="380" width="520" height="40" fill="url(#copperGrad)" opacity="0.85"/>
+        <text x="600" y="406" font-family="IBM Plex Mono" font-size="11" fill="#0d0d10" text-anchor="middle" letter-spacing="2">LOGIC BASE DIE · TSMC</text>
+
+        <!-- HBM stack layers (16-Hi) -->
+        <g>
+          <rect x="360" y="360" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="340" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="320" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="300" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="280" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="260" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="240" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="220" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="200" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="180" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="160" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="140" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="120" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="100" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="80" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+          <rect x="360" y="60" width="480" height="18" fill="url(#dieGrad)" stroke="#4a4a54" stroke-width="0.5"/>
+        </g>
+
+        <!-- TSVs (through-silicon vias) -->
+        <g stroke="#c97f44" stroke-width="1.2" opacity="0.9">
+          <line x1="410" y1="65" x2="410" y2="395"/>
+          <line x1="480" y1="65" x2="480" y2="395"/>
+          <line x1="550" y1="65" x2="550" y2="395"/>
+          <line x1="620" y1="65" x2="620" y2="395"/>
+          <line x1="690" y1="65" x2="690" y2="395"/>
+          <line x1="760" y1="65" x2="760" y2="395"/>
+          <line x1="830" y1="65" x2="830" y2="395"/>
+        </g>
+
+        <!-- TSV dots -->
+        <g fill="#d4b95f">
+          <circle cx="410" cy="65" r="2.2"/>
+          <circle cx="480" cy="65" r="2.2"/>
+          <circle cx="550" cy="65" r="2.2"/>
+          <circle cx="620" cy="65" r="2.2"/>
+          <circle cx="690" cy="65" r="2.2"/>
+          <circle cx="760" cy="65" r="2.2"/>
+          <circle cx="830" cy="65" r="2.2"/>
+        </g>
+
+        <!-- Annotations -->
+        <g font-family="IBM Plex Mono" font-size="11" fill="#9e978a">
+          <line x1="860" y1="70" x2="940" y2="70" stroke="#9e978a" stroke-width="0.5"/>
+          <text x="950" y="74">DRAM DIE 16</text>
+
+          <line x1="860" y1="250" x2="940" y2="250" stroke="#9e978a" stroke-width="0.5"/>
+          <text x="950" y="254">DRAM DIE 8</text>
+
+          <line x1="860" y1="395" x2="940" y2="395" stroke="#c97f44" stroke-width="0.5"/>
+          <text x="950" y="399" fill="#c97f44">LOGIC BASE</text>
+
+          <line x1="340" y1="195" x2="240" y2="195" stroke="#d4b95f" stroke-width="0.5"/>
+          <text x="230" y="199" text-anchor="end" fill="#d4b95f">TSV · 2048-BIT I/O</text>
+        </g>
+
+        <!-- Signal flow arrow -->
+        <g opacity="0.7">
+          <path d="M 100 250 Q 180 250 220 250" stroke="#6ea2c9" stroke-width="1.2" fill="none" stroke-dasharray="3,3"/>
+          <polygon points="220,250 212,246 212,254" fill="#6ea2c9"/>
+          <text x="100" y="240" font-family="IBM Plex Mono" font-size="10" fill="#6ea2c9" letter-spacing="1.5">2.8 TB/s</text>
+          <text x="100" y="270" font-family="IBM Plex Mono" font-size="10" fill="#6ea2c9" letter-spacing="1.5">BANDWIDTH</text>
+        </g>
+
+        <!-- Title overlay -->
+        <g font-family="Fraunces" font-style="italic">
+          <text x="60" y="60" font-size="18" fill="#ede6d6">HBM4 · 16-Hi Stack Architecture</text>
+          <text x="60" y="82" font-family="IBM Plex Mono" font-size="10" fill="#6c6658" letter-spacing="1.5">FIG. 01 — 48 GB PER STACK · 2026 PRODUCTION</text>
+        </g>
+
+        <!-- Heat pulse indicators -->
+        <g opacity="0.4">
+          <circle cx="600" cy="60" r="3" fill="#c94444">
+            <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="615" y="56" font-family="IBM Plex Mono" font-size="9" fill="#c94444" letter-spacing="1">THERMAL</text>
+        </g>
+      </svg>
+    </div>
+    <p class="caption">Fig. 01 — HBM4 reference architecture. 16 stacked DRAM dies, TSMC-fabricated logic base, 2048-bit interface. Every chip here represents roughly 3× the wafer area of a conventional DDR5 module.</p>
+  </div>
+</section>
+
+<!-- ARTICLE -->
+<article class="article">
+  <div class="container">
+
+    <p class="lede">
+      For thirty years, memory was the commodity corner of semiconductors — the part of
+      the industry that lived and died by boom-and-bust cycles, where price curves slid
+      reliably down the learning curve and the only strategic question most boards asked
+      was how many bits per wafer we could squeeze out next quarter. That world is gone.
+      In its place we have something the industry has never quite experienced before: a
+      structural reset in which memory has become the single most contested resource
+      in computing.
+    </p>
+
+    <p>
+      The numbers are now familiar to anyone who has read an earnings call this year.
+      Micron's HBM capacity is sold out through all of calendar 2026. Server DRAM contract
+      prices rose 55–60% quarter-over-quarter in Q1. NAND is up 33–38% in the same window.
+      Memory makers are posting gross margins above 50%, the kind of number we used to
+      associate with logic, not DRAM. And underneath all of it sits a physical reality
+      that we, as technologists, must make visible to everyone in our organizations:
+      <strong>producing one HBM chip consumes roughly three times the wafer area of a
+      conventional DDR5 module.</strong> Every HBM ramp is a DDR5 shortage. Every AI
+      server we ship is a laptop that doesn't.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">2.8 TB/s</div>
+        <div class="label">Per-stack bandwidth<br/>HBM4 at full production</div>
+      </div>
+      <div class="stat">
+        <div class="num">60%+</div>
+        <div class="label">Q1 2026 server DRAM<br/>price increase, QoQ</div>
+      </div>
+      <div class="stat">
+        <div class="num">$54.6B</div>
+        <div class="label">Projected HBM market<br/>for 2026 (BofA)</div>
+      </div>
+    </div>
+
+    <p>
+      This editorial is not another market outlook. There are enough of those. This one
+      is about what I believe is the harder, more consequential question for anyone
+      running a memory or memory-adjacent organization today: <em>we can see the
+      technology frontier clearly — HBM4, 3D DRAM, CXL, near-memory computing —
+      but do the people in our organizations, and the goals we are pointing them at,
+      actually match the frontier we say we want to build?</em>
+    </p>
+
+    <!-- SECTION 1 -->
+    <div class="section-label">
+      <span class="num">01 /</span>
+      The Technology Frontier
+    </div>
+    <h2>Three simultaneous inflections, and why they matter together</h2>
+
+    <p>
+      I want to sketch the frontier in a single paragraph, because too often we talk
+      about these shifts as isolated product roadmaps when in reality they are one
+      interlocking story. <strong>HBM4</strong> moved into high-volume production in
+      Q1 this year; 16-Hi 48 GB stacks are scheduled for late 2026. <strong>3D DRAM</strong>
+      — vertical-gate, stacked-cell architectures using Si/SiGe materials — is shifting
+      the core DRAM bit cell off the planar shrink treadmill for the first time in a
+      generation. <strong>CXL 3.0</strong> has quietly graduated from experiment to
+      essential plumbing; when you can't buy enough HBM, the only other answer is to
+      pool DDR5 across a rack and let the accelerators reach across the fabric. And
+      sitting next to all of this, <strong>NAND has cleared 300 layers</strong> with
+      hybrid bonding, and QLC enterprise SSDs have overtaken client SSDs as the largest
+      NAND segment for the first time in the market's history.
+    </p>
+
+    <div class="callout">
+      <div class="tag">Key Insight</div>
+      <h4>The transition from 12-Hi to 16-Hi HBM is technically harder than the jump from 8 to 12.</h4>
+      <p>
+        Wafer thickness has to drop from roughly 50 µm to 30 µm while preserving structural
+        integrity and thermal performance. This is the kind of problem that isn't solved by
+        a single heroic team — it requires packaging, process, materials, and thermal
+        engineering moving in lockstep. If your org chart still treats those as separate
+        kingdoms, the roadmap will slip.
+      </p>
+    </div>
+
+    <p>
+      None of these transitions is complete on its own. HBM4 without a base-die logic
+      co-design story is just a faster version of HBM3E. 3D DRAM without EUV patterning
+      maturity is a demo. CXL without a memory-tiering software stack is a spec sheet.
+      The organizations that are going to lead the next decade are the ones that grasp,
+      at every level, that <em>memory is no longer a component — it is a system</em>.
+      And systems require a different kind of team than components do.
+    </p>
+
+    <!-- FIGURE: photograph -->
+    <div class="figure">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400&q=80&auto=format&fit=crop"
+           alt="Close-up macro photograph of a green semiconductor circuit board showing densely packed components and gold traces, representing the complexity of modern memory packaging."
+           loading="lazy"/>
+      <div class="figure-caption"><span class="tag">FIG. 02</span> Advanced packaging is now the rate-limiting step in HBM. The organization that wins this decade wins packaging.</div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section-label">
+      <span class="num">02 /</span>
+      The Organizational Imperative
+    </div>
+    <h2>Goals must shift from volume to value, and from silos to systems</h2>
+
+    <p>
+      Here is the uncomfortable truth I have been repeating in our quarterly reviews:
+      most memory organizations — ours included, until recently — were optimized for a
+      world that no longer exists. The KPIs we inherited measured bits shipped, yield
+      percentage on the mature node, and cost-per-gigabit. Those metrics are not wrong,
+      but they are no longer sufficient. They were designed for a commodity. We are no
+      longer shipping a commodity.
+    </p>
+
+    <p>
+      When Micron's CEO says HBM is "more than sold out," the strategic question for
+      leadership is not how to extract a few more percentage points of yield out of a
+      legacy line. It is: <strong>are we allocating our scarcest resource — engineering
+      attention — to the products that define the next five years, or to the products
+      that defined the last five?</strong> Every head of memory that I speak with is
+      wrestling with some version of this reallocation problem. Most are underestimating
+      how hard it is.
+    </p>
+
+    <div class="pullquote">
+      If your roadmap is HBM4 and CXL, but your compensation plan still pays out on
+      DDR4 yield, the roadmap is going to lose.
+      <cite>— A principle I've watched play out three times in my career</cite>
+    </div>
+
+    <p>
+      Alignment is not a slogan. It is a set of concrete, mundane design choices about
+      how an organization runs. In the memory business right now, I see four specific
+      areas where misalignment is silently costing companies the future:
+    </p>
+
+    <h3>1. The incentive-to-roadmap gap</h3>
+    <p>
+      Ask your managers what percentage of their bonus is tied to HBM/advanced packaging
+      outcomes versus legacy DRAM. If the ratio doesn't match your stated capital
+      allocation, you have a goal-alignment problem regardless of how many HBM slides
+      are in the strategy deck.
+    </p>
+
+    <h3>2. The hiring-to-technology gap</h3>
+    <p>
+      The skills that built planar DRAM — shrink discipline, cell-level optimization,
+      photolithography mastery — are necessary but no longer sufficient. HBM and 3D DRAM
+      demand packaging engineers, thermal co-design specialists, TSV integration experts,
+      base-die logic co-designers, and interposer/substrate process owners. In most
+      memory companies, these roles are still treated as adjacencies rather than the
+      core of the business they now are.
+    </p>
+
+    <h3>3. The org-chart-to-customer gap</h3>
+    <p>
+      HBM is now a custom product. NVIDIA, Google TPU, AWS Trainium and Meta's MTIA all
+      want different base-die logic, different thermal envelopes, different signaling.
+      Organizations structured around standard-product lines cannot serve this
+      customer-specific future without a fundamental redesign of how customer engineering
+      and product engineering interact.
+    </p>
+
+    <h3>4. The training-to-frontier gap</h3>
+    <p>
+      Your mid-career engineers — the ones hired in the 2015-2020 window — were trained
+      on a memory industry that no longer exists. They are not obsolete; they are
+      under-invested-in. Every quarter a company does not spend real money on re-skilling
+      this cohort is a quarter the frontier moves further away from them.
+    </p>
+
+    <!-- SKILLS MATRIX -->
+    <div class="section-label">
+      <span class="num">03 /</span>
+      What We Are Hiring and Training For
+    </div>
+    <h2>The skills matrix for the memory organization of 2026</h2>
+
+    <p>
+      When I am asked by early-career engineers, university programs, or internal mobility
+      candidates what skills will matter most in memory over the next five years, this is
+      the honest answer I give. It is not exhaustive, but it is the lens I apply to
+      almost every hiring decision and every training budget I sign off on.
+    </p>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <span class="tag">Pillar 01</span>
+        <h4>Advanced Packaging &amp; Heterogeneous Integration</h4>
+        <p>TSV, hybrid bonding, 2.5D/3D interposer design, chiplet integration,
+        CoWoS-class packaging. The single highest-leverage skill area in memory today.</p>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Pillar 02</span>
+        <h4>Thermal &amp; Signal Co-Design</h4>
+        <p>At 16 layers and 2.8 TB/s, thermal and SI/PI are no longer afterthoughts.
+        Engineers who can work across the mechanical–electrical boundary are disproportionately
+        valuable.</p>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Pillar 03</span>
+        <h4>Systems &amp; Architecture Literacy</h4>
+        <p>Understanding the workload. Memory engineers who can read an LLM inference trace
+        or a CXL fabric topology will design better products than ones who cannot.</p>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Pillar 04</span>
+        <h4>AI &amp; ML for Fab Operations</h4>
+        <p>Yield modelling, defect classification, process-parameter optimization. Every
+        memory fab is becoming an AI-instrumented fab. Fluency with the models themselves
+        is now a line skill, not a specialist one.</p>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Pillar 05</span>
+        <h4>Software-Defined Memory &amp; CXL</h4>
+        <p>Memory tiering, pooling, coherency, the software contract between accelerator
+        and memory fabric. Very few classical memory engineers are comfortable here yet.
+        That is the opportunity.</p>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Pillar 06</span>
+        <h4>Customer-Specific Product Engineering</h4>
+        <p>HBM4 is a custom product. Engineers who can partner with a hyperscaler on base-die
+        customization — and navigate IP, confidentiality, and co-development in parallel —
+        are now indispensable.</p>
+      </div>
+    </div>
+
+    <!-- FIGURE 2 -->
+    <div class="figure">
+      <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=1400&q=80&auto=format&fit=crop"
+           alt="Interior of a modern data center showing rows of server racks with blue accent lighting, representing the AI infrastructure that drives memory demand."
+           loading="lazy"/>
+      <div class="figure-caption"><span class="tag">FIG. 03</span> The real customer for HBM4 is no longer a board vendor. It is a hyperscaler designing at rack scale.</div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section-label">
+      <span class="num">04 /</span>
+      A Leadership Charge
+    </div>
+    <h2>What I am asking of every leader on my team this quarter</h2>
+
+    <p>
+      I will close with the specific ask I have been making of my own leadership team,
+      because I think it generalizes. If you are a director, VP, or team lead in a memory
+      or memory-adjacent organization, I would urge you to run the following four-step
+      audit before the end of this quarter. Not as a strategy exercise — as an operational
+      one.
+    </p>
+
+    <p>
+      <strong>First</strong>, map your current compensation and promotion incentives
+      against your five-year technology roadmap. Where the two disagree, the incentives
+      will win. Fix the incentives, not the roadmap.
+    </p>
+
+    <p>
+      <strong>Second</strong>, take the six skill pillars above, or your own version of
+      them, and run a real headcount analysis. Not "do we have packaging engineers," but
+      "do we have enough packaging engineers at the seniority required, in the locations
+      required, with the customer exposure required?" The honest answer, in almost every
+      organization I benchmark against, is no.
+    </p>
+
+    <p>
+      <strong>Third</strong>, invest — genuinely, with real budget and real time — in
+      re-skilling your existing mid-career bench. They are the ones who know your fabs,
+      your customers, your institutional knowledge. They are not the problem. Not
+      re-investing in them is the problem.
+    </p>
+
+    <p>
+      <strong>Fourth</strong>, and most importantly: make the strategic story legible.
+      Every technician on the shop floor, every process engineer on the 1c node,
+      every reliability engineer on an automotive qualification flow should be able to
+      tell you, in one sentence, how their work connects to the company's position in
+      the AI memory supercycle. If they can't, that is a leadership failure, not an
+      employee one.
+    </p>
+
+    <div class="callout">
+      <div class="tag">The Core Argument</div>
+      <h4>We are at the beginning of a decade-long memory transition, not at its end.</h4>
+      <p>
+        HBM3E gives way to HBM4, then HBM4E, then HBM5 by 2029 and — if the JEDEC roadmap
+        holds — HBM8 by 2038. The companies that will lead that decade are the ones that
+        align their organizational goals, their compensation, their hiring, and their
+        training with where the technology is going, not where it has been.
+      </p>
+    </div>
+
+    <p>
+      The memory business spent thirty years being a commodity. It will spend the next
+      decade being the most strategically important component in computing. That is
+      extraordinary news for our industry. Whether it is extraordinary news for your
+      specific organization depends, almost entirely, on choices you are making right now
+      about people. The bits will follow.
+    </p>
+
+    <p style="margin-top: 48px; font-family: 'Fraunces', serif; font-style: italic; color: var(--ink-muted); text-align: center;">
+      — Until the next issue.
+    </p>
+
+  </div>
+</article>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <h4>The Memory Edge</h4>
+        <p>
+          A quarterly editorial newsletter on semiconductor memory technology, strategy,
+          and the organizations building the next decade of computing. Written by
+          practitioners, for practitioners. Opinions are those of the author and do not
+          necessarily represent any employer or affiliated organization.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h5>In This Issue</h5>
+        <a href="#">The HBM Supercycle</a>
+        <a href="#">3D DRAM &amp; CXL</a>
+        <a href="#">Skills Matrix 2026</a>
+        <a href="#">Leadership Charge</a>
+      </div>
+      <div class="footer-col">
+        <h5>Subscribe</h5>
+        <a href="#">Weekly Brief</a>
+        <a href="#">Quarterly Editorial</a>
+        <a href="#">Archive</a>
+        <a href="#">RSS Feed</a>
+      </div>
+    </div>
+    <div class="colophon">
+      <span>© 2026 The Memory Edge · Editorial</span>
+      <span>Set in Fraunces &amp; IBM Plex</span>
+      <span>Vol. IV / No. 2 · ISSN 2835-0000</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
