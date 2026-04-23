@@ -1,0 +1,98 @@
+Here are four generic multiple-choice questions on the latest AI technology happenings:
+
+---
+
+**1. In 2025, which AI company released a reasoning-focused model family that spends additional compute time "thinking" before responding, sparking an industry-wide shift toward inference-time reasoning?**
+
+A) OpenAI (with the o-series models)
+B) Meta (with LLaMA 2)
+C) IBM (with Watson)
+D) Yahoo (with AI Labs)
+
+---
+
+**2. What does the term "agentic AI" most commonly refer to in current industry usage?**
+
+A) AI systems that generate images from text prompts
+B) AI systems that autonomously plan, use tools, and execute multi-step tasks on a user's behalf
+C) AI chatbots limited to single-turn question answering
+D) Hardware accelerators used for training large models
+
+---
+
+**3. Which hardware component has become the single most contested resource in AI infrastructure, with manufacturers reporting it sold out through 2026?**
+
+A) Hard disk drives (HDDs)
+B) High Bandwidth Memory (HBM)
+C) Ethernet cables
+D) Power supply units
+
+---
+
+**4. The Model Context Protocol (MCP), introduced by Anthropic and now adopted across the industry, is designed primarily to:**
+
+A) Compress large language models for mobile devices
+B) Provide a standardized way for AI assistants to connect to external tools, data sources, and applications
+C) Replace GPUs with custom silicon
+D) Train models using less electricity
+
+---
+
+**Answer Key**
+
+1. **A** — OpenAI's o1 and later o3 models popularized inference-time reasoning, and competitors (DeepSeek R1, Gemini's thinking modes, Claude's extended thinking) quickly followed.
+2. **B** — Agentic AI refers to systems that act autonomously across multiple steps, using tools, browsers, and APIs to accomplish goals rather than just answering questions.
+3. **B** — HBM (especially HBM3E and HBM4) is the defining bottleneck of the AI memory supercycle, with all three major suppliers reporting capacity sold out through 2026.
+4. **B** — MCP is an open standard for connecting AI models to tools, databases, and services, widely adopted by Anthropic, OpenAI, Google, and others through 2025.
+
+Want me to make these harder, focus on a specific subfield (agents, reasoning, multimodal, open-source, chips, robotics), or package them into an interactive HTML quiz with scoring?
+
+
+Here are four quiz questions drawn from the editorial:
+
+---
+
+**1. According to the editorial, what is the approximate per-stack bandwidth of HBM4 at full production?**
+
+A) 819 GB/s
+B) 1.2 TB/s
+C) 2.8 TB/s
+D) 4.0 TB/s
+
+---
+
+**2. Roughly how much more wafer area does producing one HBM chip consume compared to a conventional DDR5 module?**
+
+A) About the same
+B) Roughly 1.5×
+C) Roughly 3×
+D) Roughly 10×
+
+---
+
+**3. The editorial identifies four silent misalignments costing memory organizations the future. Which of the following is NOT one of them?**
+
+A) The incentive-to-roadmap gap
+B) The hiring-to-technology gap
+C) The marketing-to-branding gap
+D) The training-to-frontier gap
+
+---
+
+**4. Which of the six skill pillars does the editorial describe as "the single highest-leverage skill area in memory today"?**
+
+A) Software-defined memory and CXL
+B) AI and ML for fab operations
+C) Customer-specific product engineering
+D) Advanced packaging and heterogeneous integration
+
+---
+
+**Answer Key**
+
+1. **C** — HBM4 delivers 2.8 TB/s per stack across its 2048-bit interface.
+2. **C** — Every HBM ramp directly compresses DDR5 supply because of this ~3× wafer conversion ratio.
+3. **C** — The four gaps named are incentive-to-roadmap, hiring-to-technology, org-chart-to-customer, and training-to-frontier.
+4. **D** — Advanced packaging and heterogeneous integration (TSV, hybrid bonding, 2.5D/3D interposer, chiplet integration) is called out as the top-leverage area.
+
+Want me to add a few more questions, adjust the difficulty, or drop these into an interactive HTML quiz (with scoring) that matches the newsletter's design?
